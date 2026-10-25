@@ -1,0 +1,113 @@
+#Question1
+correct_pin = "1234"
+balance = 10000
+attempts = 3
+authenticated = False
+history = []
+while attempts > 0:
+    entered_pin = input("Enter your PIN: ")
+    if entered_pin == correct_pin:
+        authenticated = True
+        break
+    else:
+        attempts -= 1
+        if attempts > 0:
+            print(f"Wrong PIN. Attempts left: {attempts}")
+        else:
+            print("Card blocked.")
+while authenticated:
+    print("\n1. Balance\n2. Deposit\n3. Withdraw\n4. Exit")
+    choice = input("Choose an option (1-4): ")
+
+    if choice == "1":
+        print(f"Current balance: {balance}")
+
+    elif choice == "2":
+        amount = float(input("Enter deposit amount: "))
+        if amount > 0:
+            balance += amount
+            print(f"New balance: {balance}")
+            history.append(f"Deposit {int(amount)}")
+        else:
+            print("Amount must be above 0.")
+
+    elif choice == "3":
+        amount = float(input("Enter withdrawal amount: "))
+        if amount <= balance:
+            balance -= amount
+            print(f"New balance: {balance}")
+            history.append(f"Withdraw {int(amount)}")
+        else:
+            print("Insufficient balance")
+
+    elif choice == "4":
+        print("Thank you!")
+        if history:
+            print("\nTransaction History:")
+            for transaction in history:
+                print(transaction)
+        break
+
+
+#Question2
+students ={"Aman":"Riya","Zoya": [70, 65, 80]}
+
+while True:
+    print("\n1. Add student\n2. View all\n3. Show topper\n4. Exit")
+    choice = input("Choose an option (1-4): ")
+    if choice == "1":
+        while True:
+            name = input("Enter student name: ")
+            if name in students:
+                print("Student already exists.")
+                continue
+            break
+            
+        marks = []
+        for i in range(3):
+            while True:
+                try:
+                    mark = float(input(f"Enter mark {i+1}: "))
+                    if 0 <= mark <= 100:
+                        marks.append(mark)
+                        break
+                    else:
+                        print("Invalid mark, try again.")
+                except ValueError:
+                    print("Invalid input, please enter a number.")
+                    
+        students[name] = marks
+        print(f"Successfully added {name}.")
+    elif choice == "2":
+        for name, marks in students.items():
+            avg = sum(marks) / len(marks)
+            
+            if avg >= 85:
+                grade = "A"
+            elif avg >= 70:
+                grade = "B"
+            elif avg >= 50:
+                grade = "C"
+            else:
+                grade = "F"
+                
+            print(f"{name} {avg:.2f} {grade}")
+
+    elif choice == "3":
+        topper_name = None
+        highest_avg = -1
+        
+        for name, marks in students.items():
+            avg = sum(marks) / len(marks)
+            if avg > highest_avg:
+                highest_avg = avg
+                topper_name = name
+                
+        if topper_name:
+            print(f"Topper: {topper_name}")
+        else:
+            print("No student records available.")
+
+    elif choice == "4":
+        print("Goodbye!")
+        break
